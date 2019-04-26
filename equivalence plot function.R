@@ -30,6 +30,19 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank())
    
+  
+
+  
+  #Verbose
+  
+if (CI.Low<Loweq){data$Result<- "inconclusive"}
+  else{if (CI.Low>Ref){data$Result<- "Superior"}
+    else {    if (CI.Low>Loweq & CI.High<Higheq){data$Result<- "Equivalent"} 
+      else  {if (CI.Low>Loweq & CI.High>Higheq){data$Result<- "Not_inferior"}}}}
+
+
+
+  
   print(data)
   plot
 }
