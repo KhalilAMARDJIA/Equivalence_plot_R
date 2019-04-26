@@ -1,5 +1,5 @@
 # Equivalence_plot_R
-A two one sided binomial test (TOST) 
+A two one sided binomial test (TOST) for One sample / One arm proportion
 
 Function
 TOST_binom_plot(x,n,Ref,Loweq,Higheq,conf.level)
