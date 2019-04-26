@@ -3,11 +3,13 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
   
   CI.Low<-matrix(binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$conf.int,nrow = 1)[1,1]
   CI.High<-matrix(binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$conf.int,nrow = 1)[1,2]
+  Stat.diff<-binom.test(x,n,Ref,conf.level = conf.level,alternative = "two.sided")$p.value
 
   Test<-x/n
   p.Low<-binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$p.value
   p.High<-binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$p.value
   data<-data.frame(Test,CI.Low,CI.High,p.Low,p.High)
+  data$stat.diff.p_value<-Stat.diff
   
   plot<-ggplot()+
   
@@ -30,11 +32,11 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank())
    
- 
-if (CI.Low<Loweq){data$Result<- "inconclusive"}
+
+if (CI.Low<=Loweq){data$Result<- "inconclusive"}
   else{if (CI.Low>Ref){data$Result<- "Superior"}
-    else {    if (CI.Low>Loweq & CI.High<Higheq){data$Result<- "Equivalent"} 
-      else  {if (CI.Low>Loweq & CI.High>Higheq){data$Result<- "Not_inferior"}}}}
+    else {if (CI.Low>Loweq & CI.High<Higheq){data$Result<- "Equivalent"} 
+      else  {if (CI.Low>Loweq & CI.High>=Higheq){data$Result<- "Not_inferior"}}}}
 
   print(data)
   plot
