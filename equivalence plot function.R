@@ -1,12 +1,13 @@
-binomprp_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
+TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
      require(ggplot2)
   
-  CI<-matrix(binom.test(x,n,Ref,conf.level = conf.level)$conf.int,nrow = 1) 
-  CI.Low<-CI[1,1]
-  CI.High<-CI[1,2]
+  CI.Low<-matrix(binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$conf.int,nrow = 1)[1,1]
+  CI.High<-matrix(binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$conf.int,nrow = 1)[1,2]
+
   Test<-x/n
-  p.value<-binom.test(x,n,Ref,conf.level = conf.level)$p.value
-  data<-data.frame(CI.Low,CI.High,Test,p.value)
+  p.Low<-binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$p.value
+  p.High<-binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$p.value
+  data<-data.frame(Test,CI.Low,CI.High,p.Low,p.High)
   
   plot<-ggplot()+
   
@@ -16,7 +17,7 @@ binomprp_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
   geom_vline(xintercept = Higheq,linetype = "dashed",lwd=1)+ #Uppereq 
   geom_vline(xintercept = Loweq,linetype = "dashed",lwd=1)+ #Lowereq
   
-  geom_point(aes(x=Test,y=0.5),shape=15,size=7,, col=1)+
+  geom_point(aes(x=Test,y=0.5),shape=15,size=7, col=1)+
   geom_segment(aes(x = Test, y = 0.5, xend = CI.Low, yend = 0.5), col=1,lwd=2)+ #IClower
   geom_segment(aes(x = Test, y = 0.5, xend = CI.High, yend = 0.5), col=1,lwd=2)+ #ICupper
   geom_text(aes(x = Test,y=0.51,label="Test value"),col=1,size=4)+
