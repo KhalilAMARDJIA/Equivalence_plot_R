@@ -24,13 +24,14 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
   geom_segment(aes(x = Test, y = 0.5, xend = CI.High, yend = 0.5), col=1,lwd=2)+ #ICupper
   geom_text(aes(x = Test,y=0.51,label="Test value"),col=1,size=4)+
   
-  xlab(label = "Scale")+
+  xlab(label = "Rate")+
   ylim(0.4,0.6)+
   
   theme_classic()+
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+        axis.ticks.y=element_blank())+
+    scale_x_continuous(labels = scales::percent)
    
 
 if (CI.Low<=Loweq){data$Result<- "inconclusive"}
