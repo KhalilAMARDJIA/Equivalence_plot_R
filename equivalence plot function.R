@@ -1,5 +1,5 @@
 TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
-     require(ggplot2)
+     require(c(ggplot2,pwr))
   
   CI.Low<-matrix(binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$conf.int,nrow = 1)[1,1]
   CI.High<-matrix(binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$conf.int,nrow = 1)[1,2]
@@ -11,6 +11,7 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
   data<-data.frame(Test,CI.Low,CI.High,p.Low,p.High)
   data$stat.diff.p_value<-Stat.diff
   
+###############PLOTING TEST##############################################################################
   plot<-ggplot()+
   
   geom_vline(xintercept = Ref,linetype = "dashed",col=3,lwd=1)+#ref value
@@ -33,12 +34,23 @@ TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
         axis.ticks.y=element_blank())+
     scale_x_continuous(labels = scales::percent)
    
-
+###############Equivalence testing##############################################################################
 if (CI.Low<=Loweq){data$Result<- "inconclusive"}
   else{if (CI.Low>Ref){data$Result<- "Superior"}
     else {if (CI.Low>Loweq & CI.High<Higheq){data$Result<- "Equivalent"} 
       else  {if (CI.Low>Loweq & CI.High>=Higheq){data$Result<- "Not_inferior"}}}}
 
+###############Power Caluclation################################################################################    
+PL<-pwr.p.test(h=ES.h(p1 = Test,p2= Loweq),n=n, sig.level = conf.level,alternative = "greater")$power
+PH<-pwr.p.test(h=ES.h(p1 = Test,p2= Higheq),n=n, sig.level = conf.level,alternative = "less")$power
+Psup<-pwr.p.test(h=ES.h(p1 = Test,p2= Ref),n=n, sig.level = conf.level,alternative = "greater")$power
+P<-min(PL,PH)
+
+if (data$Result=="Superior"){data$Power<-Psup}
+else{if (data$Result=="Not_inferior"){data$Power<-PL}
+  else {if (data$Result=="Equivalent"){data$Power<-P} 
+    else  {data$Power<-NA}}}
+###############OUTPUTS################################################################################      
   print(data)
   plot
 }
