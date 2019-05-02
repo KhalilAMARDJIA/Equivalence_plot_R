@@ -1,5 +1,6 @@
 TOST_binom_plot<-function(x,n,Ref,Loweq,Higheq,conf.level){
-     require(c(ggplot2,pwr))
+     require(ggplot2)
+  require(pwr)
   
   CI.Low<-matrix(binom.test(x,n,Loweq,conf.level = conf.level,alternative = "greater")$conf.int,nrow = 1)[1,1]
   CI.High<-matrix(binom.test(x,n,Higheq,conf.level = conf.level,alternative = "less")$conf.int,nrow = 1)[1,2]
