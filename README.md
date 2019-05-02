@@ -1,4 +1,4 @@
-# Equivalence_plot_R
+# One sample proportion equivalence test
 A two one sided binomial test (TOST) for One sample / One arm proportion
 
 Function
