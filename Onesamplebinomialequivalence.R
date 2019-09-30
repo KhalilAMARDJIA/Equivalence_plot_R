@@ -4,7 +4,7 @@ TOST_binom_plot <- function(x, n, Ref, Loweq, Higheq, conf.level) {
     require(binom)
 
     CI.Low <- binom.confint(x, n, conf.level, methods = "wilson")[, 5]
-    CI.High <- binom.confint(x, n, conf.level, methods = "wilson")[, 5]
+    CI.High <- binom.confint(x, n, conf.level, methods = "wilson")[, 6]
 
     Stat.diff <- binom.test(x, n, Ref, conf.level = conf.level, alternative = "two.sided")$p.value
 
