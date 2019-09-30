@@ -3,7 +3,7 @@ require(ggthemes)
 
 dat <- NULL #dataframe
 real.Rate <- 0.95
-B <- rbinom(10000, 1, real.Rate) #binomial distribution with 0 or 1 possibilities on 10000 observation
+B <- rbinom(10000, 1, real.Rate) #binomial distribution with 0 or 1 possibilities on 10000 observations
 n = 30 #sample size
 conf.level = 0.95
 
