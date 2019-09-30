@@ -2,10 +2,10 @@ require(ggplot2)
 require(ggthemes)
 
 dat <- NULL #dataframe
-real.Rate <- 0.996
-noninfrate <- 0.98
+real.Rate <- 0.98 #real or expected rate
+noninfrate <- 0.91 #lower limit
 B <- rbinom(10000, 1, real.Rate) #binomial distribution with 0 or 1 possibilities on 10000 observation
-n = 500 #sample size
+n = 59 #sample size
 conf.level = 0.95
 iteration <- 100
 
