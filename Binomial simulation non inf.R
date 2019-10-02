@@ -1,6 +1,6 @@
 require(ggplot2)
 require(ggthemes)
-
+require(binom)
 dat <- NULL #dataframe
 real.Rate <- 0.98 #real or expected rate
 noninfrate <- 0.91 #lower limit
